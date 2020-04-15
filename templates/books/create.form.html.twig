@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row mt-2 p-3">
+        <div class="col-6 d-flex flex-column w-50">
+            {% if edit is defined and edit == true %}
+                <h3 class="mb-4">Edit book: </h3>
+            {% else %}
+                <h3 class="mb-4">Add new book: </h3>
+            {% endif %}
+
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_row(form.name, {'label': 'Book name', 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.price, {'label': 'Book price', 'attr': {'class': 'form-control', 'type': 'number'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.number_of_pages, {'label': 'Number of pages', 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.year, {'label': 'Year', 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}

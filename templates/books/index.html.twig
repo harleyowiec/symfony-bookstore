@@ -3,6 +3,7 @@
 {% block body %}
     <div class="row">
         <div class="col-6 ml-auto mr-auto">
+            <h2>All books: </h2>
             <div class="books">
                 <table class="table">
                     <thead>
@@ -16,13 +17,15 @@
                     </thead>
                     <tbody>
                     {% for book in books %}
-                        <tr>
+                        <tr class="book-row">
                             <td>{{ book.id }}</td>
                             <td>{{ book.name }}</td>
                             <td>{{ book.price }} zł</td>
                             <td>{{ book.year }}</td>
-                            <td><a class="btn btn-primary" href="{{ path('books_edit', {id: book.id}) }}" role="button">Edit book</a></td>
-                            <td><a class="btn btn-danger" href="{{ path('books_delete', {id: book.id}) }}" role="button">Delete book</a></td>
+                            <td><a class="btn btn-primary" href="{{ path('books_edit', {id: book.id}) }}" role="button">Edit
+                                    book</a></td>
+                            <td><a class="btn btn-danger" href="{{ path('books_delete', {id: book.id}) }}"
+                                   role="button">Delete book</a></td>
                         </tr>
                     {% endfor %}
 

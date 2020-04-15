@@ -17,6 +17,7 @@ modules:
                       args: ["--window-size=1600,900","--headless", "--disable-gpu", "--disable-extensions"]
                       binary: "/usr/bin/google-chrome"
         - Db
+        - DbHelper
     config:
         Db:
             dsn: 'mysql:host=localhost;dbname=symfony_app'

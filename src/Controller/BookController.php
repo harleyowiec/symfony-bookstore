@@ -22,7 +22,7 @@ class BookController extends AbstractController
         $books = $this->getDoctrine()
             ->getRepository(Book::class)
             ->findAll();
-        return $this->render('book/index.html.twig', [
+        return $this->render('books/index.html.twig', [
             'controller_name' => 'BookController',
             'books' => $books
         ]);
@@ -50,7 +50,7 @@ class BookController extends AbstractController
             return $this->redirectToRoute('books_index');
         }
 
-        return $this->render('book/create.form.html.twig', [
+        return $this->render('books/create.form.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -80,8 +80,9 @@ class BookController extends AbstractController
             return $this->redirectToRoute('books_index');
         }
 
-        return $this->render('book/create.form.html.twig', [
-            'form' => $form->createView()
+        return $this->render('books/create.form.html.twig', [
+            'form' => $form->createView(),
+            'edit' => true
         ]);
     }
 

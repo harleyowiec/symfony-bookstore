@@ -22,7 +22,7 @@ final class Version20200408164238 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE book ADD price DOUBLE PRECISION NOT NULL, ADD number_of_pages INT NOT NULL, ADD year INT NOT NULL');
+        $this->addSql('ALTER TABLE books ADD price DOUBLE PRECISION NOT NULL, ADD number_of_pages INT NOT NULL, ADD year INT NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +30,6 @@ final class Version20200408164238 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE book DROP price, DROP number_of_pages, DROP year');
+        $this->addSql('ALTER TABLE books DROP price, DROP number_of_pages, DROP year');
     }
 }
