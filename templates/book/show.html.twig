@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-6 ml-auto mr-auto">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Name:</strong> {{ book.name }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Number of pages:</strong> {{ book.numberOfPages }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Year:</strong> {{ book.year }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Price:</strong> {{ book.price }}
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

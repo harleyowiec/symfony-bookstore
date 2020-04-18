@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Form\Type\BookType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,13 +15,13 @@ class BookController extends AbstractController
     /**
      * @Route("/books", name="books_index")
      */
-    public function index()
+    public function index(): Response
     {
         $books = $this->getDoctrine()
             ->getRepository(Book::class)
             ->findAll();
-        return $this->render('books/index.html.twig', [
-            'controller_name' => 'BookController',
+
+        return $this->render('book/index.html.twig', [
             'books' => $books
         ]);
     }
@@ -50,13 +48,29 @@ class BookController extends AbstractController
             return $this->redirectToRoute('books_index');
         }
 
-        return $this->render('books/create.form.html.twig', [
+        return $this->render('book/create.form.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/books/edit/{id}", name="books_edit")
+     * @Route("/books/{id}", name="books_show")
+     * @param int $id
+     * @return Response
+     */
+    public function show(int $id): Response
+    {
+        $book = $this->getDoctrine()
+            ->getRepository(Book::class)
+            ->find($id);
+
+        return $this->render('book/show.html.twig', [
+            'book' => $book
+        ]);
+    }
+
+    /**
+     * @Route("/books/{id}/edit", name="books_edit")
      * @param Request $request
      * @param int $id
      * @return Response
@@ -80,14 +94,14 @@ class BookController extends AbstractController
             return $this->redirectToRoute('books_index');
         }
 
-        return $this->render('books/create.form.html.twig', [
+        return $this->render('book/create.form.html.twig', [
             'form' => $form->createView(),
             'edit' => true
         ]);
     }
 
     /**
-     * @Route("books/delete/{id}", name="books_delete")
+     * @Route("books/{id}/delete", name="books_delete")
      * @param int $id
      * @return RedirectResponse
      */

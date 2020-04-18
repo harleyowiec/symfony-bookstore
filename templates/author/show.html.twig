@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-6 ml-auto mr-auto">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <strong>Name:</strong> {{ author.name }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Surname:</strong> {{ author.surname }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Birth date:</strong> {{ author.birthDate|date("m/d/Y") }}
+                </li>
+                <li class="list-group-item">
+                    <strong>Nickname:</strong> {{ author.nickname }}
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

@@ -2,13 +2,15 @@
 
 use AcceptanceTester;
 
-class BooksDeleteCest
+class BooksShowCest
 {
-    const URL = '/books';
-    const BOOK_ID = 88;
+    private const BOOK_ID = 88;
+    private const URL = '/books/'. self::BOOK_ID;
 
-
-    public function _before(AcceptanceTester $I)
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function _before(AcceptanceTester $I): void
     {
         $I->haveInDatabase('book', [
             'id' => self::BOOK_ID,
@@ -20,14 +22,14 @@ class BooksDeleteCest
         ]);
     }
 
-    public function tryToDeleteBook(AcceptanceTester $I)
+    /**
+     * @param AcceptanceTester $I
+     */
+    public function tryToShowBook(AcceptanceTester $I): void
     {
         $I->amOnPage(self::URL);
 
-        $I->see('Testing book');
-        $I->click('//a[@href="/books/delete/'.self::BOOK_ID.'"]');
-
-        $I->see('All books');
-        $I->dontSee('Testing book');
+        $I->see('Name: Testing book');
+        $I->see(99.99);
     }
 }

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row mt-2 p-3">
+        <div class="col-6 d-flex flex-column w-50">
+            {% if edit is defined and edit == true %}
+                <h3 class="mb-4">Edit author: </h3>
+            {% else %}
+                <h3 class="mb-4">Add new author: </h3>
+            {% endif %}
+
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_row(form.name, {'label': 'Author name', 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.surname, {'label': 'Author surname', 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.birth_date, {'label': 'Birth date', 'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.nickname, {'label': 'Nickname', 'attr': {'class': 'form-control'}, 'required': false }) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            </div>
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}
