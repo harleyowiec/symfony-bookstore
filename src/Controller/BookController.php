@@ -32,33 +32,18 @@ class BookController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function new(Request $request): Response
+    public function save(Request $request): Response
     {
         $book = new Book();
-        $authors = $author = $this->getDoctrine()
-            ->getRepository(Author::class)
-            ->findAll();
 
-        $form = $this->createForm(BookType::class, $book, [
-            'data' => $authors
-        ]);
+        $form = $this->createForm(BookType::class, $book);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $book->setName($data['name']);
-            $book->setPrice($data['price']);
-            $book->setNumberOfPages($data['number_of_pages']);
-            $book->setYear($data['year']);
-
-            $author = $this->getDoctrine()
-                ->getRepository(Author::class)
-                ->find($data[0]->getId());
-
-            $book->setAuthor($author);
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($book);
+            $entityManager->persist($data);
             $entityManager->flush();
 
             return $this->redirectToRoute('books_index');

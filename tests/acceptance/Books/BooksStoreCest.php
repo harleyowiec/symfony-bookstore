@@ -6,7 +6,19 @@ class BooksStoreCest
 {
     private const URL = '/books/create';
     private const BOOK_ID = 88;
+    private const AUTHOR_ID = 88;
 
+    public function _before(AcceptanceTester $I): void
+    {
+        $I->haveInDatabase('author', [
+            'id' => self::AUTHOR_ID,
+            'name' => 'Testing author',
+            'surname' => 'Test surname',
+            'birth_date' => '1992-01-01',
+            'nickname' => 'lalal',
+            'created' => '2020-04-08 19:01:05'
+        ]);
+    }
 
     /**
      * @param AcceptanceTester $I
@@ -20,6 +32,7 @@ class BooksStoreCest
         $I->fillField(['name' => 'book[price]'],42.21);
         $I->fillField(['name' => 'book[number_of_pages]'],66);
         $I->fillField(['name' => 'book[year]'],2000);
+        $I->selectOption('#book_author', self::AUTHOR_ID);
         $I->click('Save');
 
         $I->see('All book');

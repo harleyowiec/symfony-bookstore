@@ -6,18 +6,29 @@ class BooksIndexCest
 {
     private const URL = '/books/';
     private const BOOK_ID = 88;
+    private const AUTHOR_ID = 88;
 
     /**
      * @param AcceptanceTester $I
      */
     public function _before(AcceptanceTester $I): void
     {
+        $I->haveInDatabase('author', [
+            'id' => self::AUTHOR_ID,
+            'name' => 'Testing author',
+            'surname' => 'Test surname',
+            'birth_date' => '1992-01-01',
+            'nickname' => 'lalal',
+            'created' => '2020-04-08 19:01:05'
+        ]);
+
         $I->haveInDatabase('book', [
             'id' => self::BOOK_ID,
             'name' => 'Testing book',
             'price' => 99.99,
             'number_of_pages' => 120,
             'year' => 2018,
+            'author_id' => self::AUTHOR_ID,
             'created' => '2020-04-08 19:01:05'
         ]);
     }
