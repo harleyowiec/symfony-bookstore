@@ -16,6 +16,12 @@
                 <li class="list-group-item">
                     <strong>Price:</strong> {{ book.price }}
                 </li>
+                <li class="list-group-item">
+                    <strong>Author:</strong>
+                        <a href="{{ path('authors_show', {id: book.getAuthor().id}) }}">
+                            {{ book.getAuthor().name }} {{ book.getAuthor().surname }}
+                        </a>
+                </li>
             </ul>
         </div>
     </div>

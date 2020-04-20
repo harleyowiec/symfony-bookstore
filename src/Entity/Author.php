@@ -4,7 +4,10 @@ namespace App\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AuthorRepository")
@@ -43,9 +46,16 @@ class Author
      */
     private $birthDate;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Book", mappedBy="author", cascade={"persist", "remove"})
+     */
+    private $books;
+
+
     public function __construct()
     {
         $this->created = new DateTime();
+        $this->books = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,6 +112,32 @@ class Author
     public function setBirthDate(DateTimeInterface $birthDate): self
     {
         $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Book $book): self
+    {
+        if ($this->books->contains($book)) {
+            $this->books->removeElement($book);
+        }
 
         return $this;
     }

@@ -4,7 +4,12 @@ namespace App\Entity;
 
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BookRepository")
@@ -42,6 +47,13 @@ class Book
      * @ORM\Column(type="datetime")
      */
     private $created;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Author", inversedBy="books", cascade={"persist"})
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
+     */
+    private $author;
+
 
     public function __construct()
     {
@@ -104,5 +116,17 @@ class Book
     public function getCreated(): ?DateTimeInterface
     {
         return $this->created;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(Author $author): self
+    {
+        $this->author = $author;
+
+        return $this;
     }
 }

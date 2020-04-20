@@ -16,6 +16,14 @@
                 <li class="list-group-item">
                     <strong>Nickname:</strong> {{ author.nickname }}
                 </li>
+                <li class="list-group-item">
+                    <strong>Books:</strong>
+                    {% for book in author.getBooks() %}
+                        <a href="{{ path('books_show', {id: book.id}) }}">
+                            {{ book.name }}
+                        </a>
+                    {% endfor %}
+                </li>
             </ul>
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Author;
 use App\Entity\Book;
 use App\Form\Type\BookType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,12 +35,27 @@ class BookController extends AbstractController
     public function new(Request $request): Response
     {
         $book = new Book();
+        $authors = $author = $this->getDoctrine()
+            ->getRepository(Author::class)
+            ->findAll();
 
-        $form = $this->createForm(BookType::class, $book);
+        $form = $this->createForm(BookType::class, $book, [
+            'data' => $authors
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $book = $form->getData();
+            $data = $form->getData();
+            $book->setName($data['name']);
+            $book->setPrice($data['price']);
+            $book->setNumberOfPages($data['number_of_pages']);
+            $book->setYear($data['year']);
+
+            $author = $this->getDoctrine()
+                ->getRepository(Author::class)
+                ->find($data[0]->getId());
+
+            $book->setAuthor($author);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($book);
