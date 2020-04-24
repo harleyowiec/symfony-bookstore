@@ -5,9 +5,10 @@ use App\Entity\Author;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class FIlterByAuthorType extends AbstractType
+class FilterByAuthorType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,8 +19,10 @@ class FIlterByAuthorType extends AbstractType
         $builder
             ->add('author', EntityType::class, [
                 'class' => Author::class,
+                'placeholder' => 'Choose an author',
                 'choice_label' => 'getName'
             ])
+            ->add('name', TextType::class)
             ->add('save', SubmitType::class);
     }
 }

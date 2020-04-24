@@ -10,7 +10,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Book|null find($id, $lockMode = null, $lockVersion = null)
  * @method Book|null findOneBy(array $criteria, array $orderBy = null)
  * @method Book[]    findAll()
- * @method Book[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class BookRepository extends ServiceEntityRepository
 {
@@ -20,17 +19,29 @@ class BookRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $id
-     * @return Book[] Returns an array of Book objects
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array
      */
-    public function findByAuthorId(int $id): array
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.author = :val')
-            ->setParameter('val', $id)
-            ->orderBy('b.id', 'ASC')
+        $query = $this->createQueryBuilder('b');
+
+        if (!empty($criteria['author'])) {
+            $query->andWhere('b.author = :author')
+                ->setParameter('author', $criteria['author']->getId());
+        }
+
+        if (!empty($criteria['name'])) {
+            $query->andWhere('b.name LIKE :name')
+                ->setParameter('name', '%'.$criteria['name'].'%');
+        }
+
+        return $query->orderBy('b.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult();
+            ->execute();
     }
 }
