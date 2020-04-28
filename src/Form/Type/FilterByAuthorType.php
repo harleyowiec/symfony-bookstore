@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use App\Entity\Author;
@@ -20,9 +21,11 @@ class FilterByAuthorType extends AbstractType
             ->add('author', EntityType::class, [
                 'class' => Author::class,
                 'placeholder' => 'Choose an author',
-                'choice_label' => 'getName'
+                'choice_label' => function ($author) {
+                    return $author->getName() . ' ' . $author->getSurname();
+                }
             ])
             ->add('name', TextType::class)
-            ->add('save', SubmitType::class);
+            ->add('search', SubmitType::class);
     }
 }

@@ -11,6 +11,9 @@
             <div class="form-group">
                 {{ form_row(form.author, {'label': 'Author', 'attr': {'class': 'form-control'}, 'required': false}) }}
             </div>
+            <div class="form-group">
+                {{ form_row(form.search, {'attr': {'class': 'btn btn-primary'}}) }}
+            </div>
             {{ form_end(form) }}
             <div class="books">
                 <table class="table  table-striped table-hover">
