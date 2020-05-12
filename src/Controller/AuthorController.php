@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Author;
 use App\Form\Type\AuthorType;
+use App\Services\AuthorService;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,13 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthorController extends AbstractController
 {
     /**
+     * @var
+     */
+    private $authorService;
+
+    /**
+     * @param AuthorService $authorService
+     */
+    public function __construct(AuthorService $authorService)
+    {
+        $this->authorService = $authorService;
+    }
+    /**
      * @Route("/authors", name="authors_index")
      */
     public function index(): Response
     {
-        $authors = $this->getDoctrine()
-            ->getRepository(Author::class)
-            ->findAll();
+        $authors = $this->authorService->getAuthors();
+
         return $this->render('author/index.html.twig', [
             'authors' => $authors
         ]);
@@ -29,20 +42,17 @@ class AuthorController extends AbstractController
      * @Route("/authors/create", name="authors_create")
      * @param Request $request
      * @return Response
+     * @throws ORMException
      */
     public function new(Request $request): Response
     {
         $author = new Author();
-
         $form = $this->createForm(AuthorType::class, $author);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $author = $form->getData();
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($author);
-            $entityManager->flush();
+            $this->authorService->save($author);
 
             return $this->redirectToRoute('authors_index');
         }
@@ -59,9 +69,7 @@ class AuthorController extends AbstractController
      */
     public function show(int $id): Response
     {
-        $author = $this->getDoctrine()
-            ->getRepository(Author::class)
-            ->find($id);
+        $author = $this->authorService->getById($id);
 
         return $this->render('author/show.html.twig', [
             'author' => $author
@@ -73,22 +81,17 @@ class AuthorController extends AbstractController
      * @param Request $request
      * @param int $id
      * @return Response
+     * @throws ORMException
      */
     public function edit(Request $request, int $id): Response
     {
-        $author = $this->getDoctrine()
-            ->getRepository(Author::class)
-            ->find($id);
-
+        $author = $this->authorService->getById($id);
         $form = $this->createForm(AuthorType::class, $author);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $author = $form->getData();
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($author);
-            $entityManager->flush();
+            $this->authorService->save($author);
 
             return $this->redirectToRoute('authors_index');
         }
@@ -103,15 +106,11 @@ class AuthorController extends AbstractController
      * @Route("authors/{id}/delete", name="authors_delete")
      * @param int $id
      * @return RedirectResponse
+     * @throws ORMException
      */
     public function delete(int $id): RedirectResponse
     {
-        $author = $this->getDoctrine()
-            ->getRepository(Author::class)
-            ->find($id);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($author);
-        $entityManager->flush();
+        $this->authorService->delete($id);
 
         return $this->redirectToRoute('authors_index');
     }
